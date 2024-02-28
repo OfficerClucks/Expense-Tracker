@@ -4,6 +4,7 @@ from expense import Expense
 def main():
     print(f"Is this running?") #Test method
     expense_file_path = "expenses.csv"
+    budget = 2000
     # get user to input an expense
    # expense = get_user_expense()
     # print(expense) Another test method
@@ -11,7 +12,7 @@ def main():
    # save_expense_to_file(expense, expense_file_path)
     #Read file and summerize expenses
 
-    summarize_expenses(expense_file_path)
+    summarize_expenses(expense_file_path, budget)
 
     pass
 
@@ -59,7 +60,7 @@ def save_expense_to_file(expense: Expense, expense_file_path):
     with open(expense_file_path, "a", encoding="utf-8") as f:
         f.write(f"{expense.name},{expense.amount},{expense.category}\n")
  
-def summarize_expenses(expense_file_path):
+def summarize_expenses(expense_file_path, budget):
     print(f"Summarizing expenses")
     expenses: list[Expense]= []
     with open(expense_file_path, "r",encoding="utf-8") as f:
@@ -81,9 +82,16 @@ def summarize_expenses(expense_file_path):
         else:
             amount_by_category[key] = expense.amount
 
-    print(amount_by_category)
 
+    print("Expenses By Category 📈:")
+    for key, amount in amount_by_category.items():
+        print(f"  {key}: ${amount:.2f}")
 
+    total_spent = sum([x.amount for x in expenses])
+    print(f"You've spent ${total_spent:.2f} this month!")
+
+    remaining_budget = budget - total_spent
+    print(f"Budget Remaing: ${remaining_budget:.2f}")
 
 if __name__ == "__main__":
     main()
