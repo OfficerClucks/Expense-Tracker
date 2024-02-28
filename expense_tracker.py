@@ -5,10 +5,10 @@ def main():
     print(f"Is this running?") #Test method
     expense_file_path = "expenses.csv"
     # get user to input an expense
-    expense = get_user_expense()
+   # expense = get_user_expense()
     # print(expense) Another test method
     # Write their expense to a file
-    save_expense_to_file(expense, expense_file_path)
+   # save_expense_to_file(expense, expense_file_path)
     #Read file and summerize expenses
 
     summarize_expenses(expense_file_path)
@@ -61,7 +61,7 @@ def save_expense_to_file(expense: Expense, expense_file_path):
  
 def summarize_expenses(expense_file_path):
     print(f"Summarizing expenses")
-    expenses = []
+    expenses: list[Expense]= []
     with open(expense_file_path, "r",encoding="utf-8") as f:
         lines = f.readlines()
         for line in lines:
@@ -72,7 +72,16 @@ def summarize_expenses(expense_file_path):
             )
             print(line_expense)
             expenses.append(line_expense)
-    print(expenses)
+    
+    amount_by_category = {}
+    for expense in expenses:
+        key = expense.category
+        if key in amount_by_category:
+            amount_by_category[key] += expense.amount
+        else:
+            amount_by_category[key] = expense.amount
+
+    print(amount_by_category)
 
 
 
