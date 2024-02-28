@@ -2,16 +2,16 @@ from expense import Expense
 
 
 def main():
-   ## print(f"Is this running?")
-
+    print(f"Is this running?") #Test method
+    expense_file_path = "expenses.csv"
     # get user to input an expense
     expense = get_user_expense()
-    print(expense)
+    # print(expense) Another test method
     # Write their expense to a file
-    save_expense_to_file()
+    save_expense_to_file(expense, expense_file_path)
     #Read file and summerize expenses
 
-    summarize_expenses()
+    summarize_expenses(expense_file_path)
 
     pass
 
@@ -54,13 +54,26 @@ def get_user_expense():
 
     
 
-def save_expense_to_file():
-    print(f"Writing to file")
-
+def save_expense_to_file(expense: Expense, expense_file_path):
+    print(f"Saving user Expense: {expense} to {expense_file_path}")
+    with open(expense_file_path, "a", encoding="utf-8") as f:
+        f.write(f"{expense.name},{expense.amount},{expense.category}\n")
  
-def summarize_expenses():
+def summarize_expenses(expense_file_path):
     print(f"Summarizing expenses")
-    
+    expenses = []
+    with open(expense_file_path, "r",encoding="utf-8") as f:
+        lines = f.readlines()
+        for line in lines:
+            expense_name, expense_amount, expense_category = line.strip().split(",")
+            line_expense = Expense(
+                name=expense_name, amount=float(expense_amount)
+                , category=expense_category
+            )
+            print(line_expense)
+            expenses.append(line_expense)
+    print(expenses)
+
 
 
 if __name__ == "__main__":
